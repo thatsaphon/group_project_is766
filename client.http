@@ -1,0 +1,89 @@
+
+//register//
+GET http://127.0.0.1:8080/register
+Authorization: eyJhbGciOiJSUzI1NiIsImtpZCI6ImM2NzNkM2M5NDdhZWIxOGI2NGU1OGUzZWRlMzI1NWZiZjU3NTI4NWIiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiS2FldyBLcyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9pczc2Ni1wcm9qZWN0IiwiYXVkIjoiaXM3NjYtcHJvamVjdCIsImF1dGhfdGltZSI6MTY1MTMzNzA3MCwidXNlcl9pZCI6IjVRWHBPeGxsMEJaM0t3T2NaWWlJWG83aHBpQzMiLCJzdWIiOiI1UVhwT3hsbDBCWjNLd09jWllpSVhvN2hwaUMzIiwiaWF0IjoxNjUxMzM3MDcwLCJleHAiOjE2NTEzNDA2NzAsImVtYWlsIjoia2Fld2tzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicGhvbmVfbnVtYmVyIjoiKzY2ODYzNTI3Mzg0IiwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJwaG9uZSI6WyIrNjY4NjM1MjczODQiXSwiZW1haWwiOlsia2Fld2tzQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.kdB7jCO_3TV2DWHK9H_My18l5vtYKkJpwyJd3BbVtWRy8K0wX2EJrn-NkkICoNb2JqcKLBeFGIXYiY0gOjpVJF-hTKoC9B2Q59izKVtPBGK-Lv3expWJKwNYTK6g5PjGOYG3twJEkQOpOt1kODLL2WrPEiUQEOAGAaKeAuiL7s6ApoylGXqlTAOwOULJzqsZe2qxmiTI7vbux8-kHfn5xYhCSL8szgiqd6pnYfIWASvD-qPxrptuq6UA96nJo_pXS-i27ECycEZBNhuf1xUaxFJyVrXR54-29779haAD89HNJ2WP3w-6pHEHqVZU6bYOZtbLXdRG3pwWL0jE_G3a0w
+
+POST http://127.0.0.1:8080/sendCV
+Authorization: BearereyJhbGciOiJSUzI1NiIsImtpZCI6ImVmMzAxNjFhOWMyZGI3ODA5ZjQ1MTNiYjRlZDA4NzNmNDczMmY3MjEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiS2FldyBLcyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9pczc2Ni1wcm9qZWN0IiwiYXVkIjoiaXM3NjYtcHJvamVjdCIsImF1dGhfdGltZSI6MTY1MTM0MTA2MCwidXNlcl9pZCI6IjVRWHBPeGxsMEJaM0t3T2NaWWlJWG83aHBpQzMiLCJzdWIiOiI1UVhwT3hsbDBCWjNLd09jWllpSVhvN2hwaUMzIiwiaWF0IjoxNjUxMzQxMDYwLCJleHAiOjE2NTEzNDQ2NjAsImVtYWlsIjoia2Fld2tzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicGhvbmVfbnVtYmVyIjoiKzY2ODYzNTI3Mzg0IiwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJwaG9uZSI6WyIrNjY4NjM1MjczODQiXSwiZW1haWwiOlsia2Fld2tzQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.RWkSBQdhMrCCL38M4IVE5P2RhtUU7BOksycEffTI7LRCI85fYYHGmNl9-O4zCz098oCWwoBSCOAEvJtuWlmz43Mo4UFeitVbhxo4rvXxPDB7hp3m6l1Zjq5NJdxus7mlIk_96nevD8Z13WB3HRZAdnxDWx5M1Lu8D971MmZzUbT_ha0Waw0ZlAEia3gCn-R9Lt_kGXQdFzk9wfyebvVspGEEVFJrRcSJuWoZRGwalrcgYTfyqLFgs6CM4PJooNNi88C5xtAcctLLxH2AyjKTnz-ys-8jpwxrzuc9usIDwv3M-zDs9gsGmj_8onvavRYjaGJczqp0jxFggnFUzVTnMA
+
+POST http://127.0.0.1:8080/register HTTP/1.1
+content-type: application/json
+
+{
+    "firstname": "Nan",
+    "lastname": "NV",
+    "birthdate": "9 Nov 1994",
+    "address": "Home",
+    "email": "nannv@gmail.com",
+    "phone": "0863527384",
+    "education": "Bachelor degree",
+    "workexperience": "work",
+    "fileid": ""
+}
+
+POST http://127.0.0.1:8080/register HTTP/1.1
+content-type: application/json
+
+{
+     "firstname": "Kaew",
+    "lastname": "Ks",
+    "birthdate": "16 May 1994",
+    "address": "Home",
+    "email": "kaewks@gmail.com",
+    "phone": "+66863527384",
+    "education": "Bachelor degree",
+    "workexperience": "work",
+    "fileid": "",
+    "password":"123456"
+}
+
+PUT http://127.0.0.1:8080/register/kaewks@gmail.com HTTP/1.1
+content-type: application/json
+
+{
+    "firstname": "Kaew",
+    "lastname": "Ks",
+    "birthdate": "16 May 1994",
+    "address": "Home",
+    "email": "kaewks@gmail.com",
+    "phone": "0863527384",
+    "education": "Bachelor degree",
+    "workexperience": "no work"
+}
+
+DELETE  http://127.0.0.1:8080/register/nannv@gmail.com HTTP/1.1
+
+//search job//
+GET http://127.0.0.1:8080/position/DBA
+
+GET http://127.0.0.1:8080/company/ABC
+
+GET http://127.0.0.1:8080/location/BKK
+
+//save file//
+POST http://127.0.0.1:8080/file HTTP/1.1
+Authorization: eyJhbGciOiJSUzI1NiIsImtpZCI6ImM2NzNkM2M5NDdhZWIxOGI2NGU1OGUzZWRlMzI1NWZiZjU3NTI4NWIiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiS2FldyBLcyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9pczc2Ni1wcm9qZWN0IiwiYXVkIjoiaXM3NjYtcHJvamVjdCIsImF1dGhfdGltZSI6MTY1MTMzMjk4NywidXNlcl9pZCI6IjVRWHBPeGxsMEJaM0t3T2NaWWlJWG83aHBpQzMiLCJzdWIiOiI1UVhwT3hsbDBCWjNLd09jWllpSVhvN2hwaUMzIiwiaWF0IjoxNjUxMzMyOTg3LCJleHAiOjE2NTEzMzY1ODcsImVtYWlsIjoia2Fld2tzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicGhvbmVfbnVtYmVyIjoiKzY2ODYzNTI3Mzg0IiwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJwaG9uZSI6WyIrNjY4NjM1MjczODQiXSwiZW1haWwiOlsia2Fld2tzQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.ZuzwbhltVCckCTGMbTz85Ae9hqVEspSV-Y48-woq27XAZrRVdkX26uV5UjaCf0bEwaSJ7iCUt4Cp1EIX0uvjitNUn4oXG6yut4fxlwlhMOsAdpOQZHCy7lABN-WaXTyoXJOYG97Gwc0OvEuAFJdMaVfVXXjUKYBI6q698yQXUjv4Pal6HoVD-vo9BxT4D22gc-2czBe200vxCZrcpMbxtUqGY17YrW2d9yiwocWGYJ3vX_Yr1zI2HgUytbHPqNdOflbJhCEMn6Vhbjq74_iAnK3k7qrFM6YMmIE9C9eib7L2BhmegPzVOhWGheK3C4d3pVmgSjQ8P18JvuA4-j-dGA
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="email"
+
+kaewks@gmail.com
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="CV.pdf"
+Content-Type: application/pdf
+
+< ./CV.pdf
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+//get file id//
+GET http://127.0.0.1:8080/filename/2022-04-24
+
+//add file id//
+# PUT  http://127.0.0.1:8080/fileid/kaewks@gmail.com HTTP/1.1
+# content-type: application/json
+
+# {
+#     "Fileid": "ABCD12345678"
+# }
