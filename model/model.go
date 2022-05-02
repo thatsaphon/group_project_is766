@@ -3,16 +3,11 @@ package model
 //register//
 
 type CreateRegisterRequest struct {
-	Firstname      string `bson:"firstname" json:"firstname"`
-	Lastname       string `bson:"lastname" json:"lastname"`
-	Birthdate      string `bson:"birthdate" json:"birthdate"`
-	Address        string `bson:"address" json:"address"`
-	Email          string `bson:"email" json:"email" validate:"required"`
-	Password       string `bson:"-" json:"password" validate:"required"`
-	Phone          string `bson:"phone" json:"phone"`
-	Education      string `bson:"education" json:"education"`
-	WorkExperience string `bson:"workexperience" json:"workexperience"`
-	FileID         string `bson:"fileid" json:"fileid"`
+	Firstname string `bson:"firstname" json:"firstname"`
+	Lastname  string `bson:"lastname" json:"lastname"`
+	Email     string `bson:"email" json:"email" validate:"required"`
+	Password  string `bson:"-" json:"password" validate:"required"`
+	FileID    string `bson:"fileid" json:"fileid"`
 }
 
 // type UpdateFileID struct {

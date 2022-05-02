@@ -1,15 +1,15 @@
 package model
 
 type JobsResponseModel struct {
-	Position  []map[string]interface{} `json:"position"`
-	Jobsource string                   `json:"jobsource"`
-	Company   string                   `json:"company"`
-	Salary    string                   `json:"salary"`
-	Location  string                   `json:"location"`
-	Urllink   string                   `json:"urllink"`
-	Email     string                   `json:"email"`
-	Status    string                   `json:"status"`
-	Message   string                   `json:"message"`
+	Jobs []map[string]interface{} `json:"position"`
+	// Jobsource string                   `json:"jobsource"`
+	// Company   string                   `json:"company"`
+	// Salary    string                   `json:"salary"`
+	// Location  string                   `json:"location"`
+	// Urllink   string                   `json:"urllink"`
+	// Email     string                   `json:"email"`
+	// Status    string                   `json:"status"`
+	Message string `json:"message"`
 }
 
 //search job//

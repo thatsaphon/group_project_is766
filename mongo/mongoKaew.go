@@ -27,7 +27,7 @@ func GetRegister(queryemail string) ([]map[string]interface{}, error) {
 		}
 	}()
 
-	collection := client.Database("IS766-Final-Project").Collection("users")
+	collection := client.Database("IS766FinalProject").Collection("users")
 	cur, err := collection.Find(ctx, bson.D{{"email", queryemail}})
 	if err != nil {
 		return []map[string]interface{}{}, err
@@ -65,7 +65,7 @@ func CreateRegister(register model.CreateRegisterRequest) error {
 			panic(err)
 		}
 	}()
-	collection := client.Database("IS766-Final-Project").Collection("users")
+	collection := client.Database("IS766FinalProject").Collection("users")
 	registerBson, err := bson.Marshal(register)
 
 	if err != nil {
@@ -91,7 +91,7 @@ func UpdateRegister(updatedemail string, register model.CreateRegisterRequest) e
 			panic(err)
 		}
 	}()
-	collection := client.Database("IS766-Final-Project").Collection("users")
+	collection := client.Database("IS766FinalProject").Collection("users")
 
 	_, err = collection.DeleteOne(ctx, bson.D{{"email", updatedemail}})
 	if err != nil {
@@ -118,7 +118,7 @@ func DeleteRegister(deletedemail string) error {
 			panic(err)
 		}
 	}()
-	collection := client.Database("IS766-Final-Project").Collection("users")
+	collection := client.Database("IS766FinalProject").Collection("users")
 
 	_, err = collection.DeleteOne(ctx, bson.D{{"email", deletedemail}})
 	if err != nil {
@@ -143,7 +143,7 @@ func GetPosition(queryposition string) ([]map[string]interface{}, error) {
 		}
 	}()
 
-	collection := client.Database("IS766-Final-Project").Collection("jobs")
+	collection := client.Database("IS766FinalProject").Collection("jobs")
 	cur, err := collection.Find(ctx, bson.D{{"position", primitive.Regex{Pattern: queryposition, Options: ""}}})
 	if err != nil {
 		return []map[string]interface{}{}, err
@@ -182,7 +182,7 @@ func GetCompany(querycompany string) ([]map[string]interface{}, error) {
 		}
 	}()
 
-	collection := client.Database("IS766-Final-Project").Collection("jobs")
+	collection := client.Database("IS766FinalProject").Collection("jobs")
 	cur, err := collection.Find(ctx, bson.D{{"company", primitive.Regex{Pattern: querycompany, Options: ""}}})
 	if err != nil {
 		return []map[string]interface{}{}, err
@@ -221,7 +221,7 @@ func GetLocation(querylocation string) ([]map[string]interface{}, error) {
 		}
 	}()
 
-	collection := client.Database("IS766-Final-Project").Collection("jobs")
+	collection := client.Database("IS766FinalProject").Collection("jobs")
 	cur, err := collection.Find(ctx, bson.D{{"location", primitive.Regex{Pattern: querylocation, Options: ""}}})
 	if err != nil {
 		return []map[string]interface{}{}, err
@@ -316,7 +316,7 @@ func AddFileID(email string, fileid string) error {
 			panic(err)
 		}
 	}()
-	collection := client.Database("IS766-Final-Project").Collection("users")
+	collection := client.Database("IS766FinalProject").Collection("users")
 	_, err = collection.UpdateOne(
 		ctx,
 		bson.M{"email": email},

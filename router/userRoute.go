@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"group-project/firebase"
 	"group-project/middleware"
 	"group-project/model"
 	"group-project/mongo"
@@ -21,66 +20,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/gridfs"
 )
 
-func RouterKaew(r *gin.Engine) {
-	//POST ข้อมูลส่วนตัว
-	r.POST("/register", func(c *gin.Context) {
-		var request model.CreateRegisterRequest
-		err := c.ShouldBindJSON(&request)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
-		doesEmailExist, err := firebase.GetUserByEmail(request.Email)
-		if doesEmailExist != nil {
-			doesEmailExist, _ := mongo.GetRegister(request.Email)
-			if doesEmailExist != nil {
-				c.JSON(400, gin.H{
-					"message": "this email is already used",
-				})
-				return
-			}
-			err = mongo.CreateRegister(request)
-			if err != nil {
-				c.JSON(http.StatusBadRequest, gin.H{
-					"message": err.Error(),
-				})
-				return
-			}
-			if err == nil {
-				c.JSON(http.StatusOK, gin.H{
-					"message": "Register is created.",
-				})
-			}
-			return
-		}
-
-		err = firebase.CreateUser(
-			request.Email,
-			request.Phone,
-			request.Password,
-			request.Firstname+" "+request.Lastname,
-		)
-		if err != nil && err.Error() != "EOF" {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
-
-		err = mongo.CreateRegister(request)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": err.Error(),
-			})
-			return
-		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Register is created.",
-		})
-	})
+func UserRoute(r *gin.Engine) {
 
 	//GET ข้อมูลส่วนตัว
 	r.Use(middleware.AuthMiddleware)
@@ -139,38 +79,6 @@ func RouterKaew(r *gin.Engine) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Registers is Delete",
 		})
-	})
-
-	//search job from company
-	r.GET("/company/:company", func(c *gin.Context) {
-		company := c.Param("company")
-		var response model.JobResponseModel
-		jobs, err := mongo.GetCompany(company)
-		if err != nil {
-			fmt.Println(err)
-			response.Message = "Internal Server Error"
-			c.JSON(http.StatusOK, response)
-		}
-		response.Jobs = jobs
-		response.Message = "Success"
-
-		c.JSON(http.StatusOK, response)
-	})
-
-	//search job from location
-	r.GET("/location/:location", func(c *gin.Context) {
-		location := c.Param("location")
-		var response model.JobResponseModel
-		jobs, err := mongo.GetLocation(location)
-		if err != nil {
-			fmt.Println(err)
-			response.Message = "Internal Server Error"
-			c.JSON(http.StatusOK, response)
-		}
-		response.Jobs = jobs
-		response.Message = "Success"
-
-		c.JSON(http.StatusOK, response)
 	})
 
 	// POST file
@@ -325,6 +233,171 @@ func RouterKaew(r *gin.Engine) {
 			"message": "sent success",
 		})
 	})
+
+	//แสดง ตำแหน่งงานทั้งหมดของแต่ละ User โดยหาตาม email
+	r.GET("/userjob/", func(c *gin.Context) {
+		email := c.MustGet("email").(string)
+		var response model.UserResponseJobModel
+		useremails, err := mongo.GetUserJob(email)
+		if err != nil {
+			fmt.Println(err)
+			response.Message = "Internal Server Error"
+			c.JSON(http.StatusOK, response)
+		}
+		response.Userjobs = useremails
+		response.Message = "Success"
+
+		c.JSON(http.StatusOK, response)
+	})
+
+	//insert job ที่เลือกลง DB
+	r.POST("/userjob", func(c *gin.Context) {
+		email := c.MustGet("email").(string)
+		var request model.CreateJobRequest
+		err := c.ShouldBindJSON(&request)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": err.Error(),
+			})
+			return
+		}
+		request.Email = email
+
+		// ตรวจสอบ URL ถูกต้องหรือไม่ ก่อน บันทึกลงฐานข้อมูล Recheck
+		resp, err := http.Get(request.Urllink)
+		fmt.Println(err)
+		defer resp.Body.Close()
+
+		bodyBytes, err := io.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+		bodyString := string(bodyBytes)
+		if strings.Contains(bodyString, "Sorry, This page is not available!") {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Job is expire",
+			})
+			return
+		}
+		if strings.Contains(bodyString, "Sorry, we couldn't find the page you are looking for.") {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Job is expire",
+			})
+			return
+		}
+		if strings.Contains(bodyString, "src=\"/static/images/job-not-found.svg\"") {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Job is expire",
+			})
+			return
+		}
+
+		if err == nil {
+			fmt.Println(resp.Status)
+			defer resp.Body.Close()
+			err = mongo.CreateJob(request)
+			if err != nil {
+				c.JSON(http.StatusOK, gin.H{
+					"message": err.Error(),
+				})
+				return
+			}
+
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Job is created.",
+			})
+			return
+
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Job is expire",
+			})
+		}
+
+	})
+
+	//update status ของ Job โดยส่งใช้ Email link เป็นเงื่อนไข และเปลี่ยนเฉพาะ status ไป
+	//status = Register , Delete , Like
+	r.PUT("/userjob/", func(c *gin.Context) {
+		upemail := c.MustGet("email").(string)
+
+		var request model.CreateJobRequest
+		err := c.ShouldBindJSON(&request)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"message": err.Error(),
+			})
+			return
+		}
+
+		// ตรวจสอบ URL ถูกต้องหรือไม่ ก่อน บันทึกลงฐานข้อมูล Recheck
+		resp, err := http.Get(request.Urllink)
+		bodyBytes, err := io.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+		bodyString := string(bodyBytes)
+		if strings.Contains(bodyString, "Sorry, This page is not available!") {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Job is expire",
+			})
+			return
+		}
+		if strings.Contains(bodyString, "Sorry, we couldn't find the page you are looking for.") {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Job is expire",
+			})
+			return
+		}
+		if strings.Contains(bodyString, "src=\"/static/images/job-not-found.svg\"") {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Job is expire",
+			})
+			return
+		}
+
+		if err == nil {
+			fmt.Println(resp.Status)
+			defer resp.Body.Close()
+			err = mongo.UpdateJob(request.Status, request.Urllink, upemail, request)
+			if err != nil {
+				c.JSON(http.StatusOK, gin.H{
+					"message": err.Error(),
+				})
+				return
+			}
+
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Job Status is update.",
+			})
+			return
+
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Job is expire",
+			})
+		}
+
+	})
+
+	//ลบ Job ที่ ไม่ต้องการออกไปโดยใช้ ID
+	r.DELETE("/userjob/:id", func(c *gin.Context) {
+		id := c.Param("id")
+
+		err := mongo.DeleteJob(id)
+		println(id)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Job is Deleted.",
+		})
+	})
+
 }
 
 func GetfileID2(filename string) string {

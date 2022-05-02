@@ -25,7 +25,7 @@ func GetJobs() ([]map[string]interface{}, error) {
 		}
 	}()
 
-	collection := client.Database("IS766-Final-Project").Collection("jobbyuser")
+	collection := client.Database("IS766FinalProject").Collection("jobs")
 	cur, err := collection.Find(ctx, bson.D{})
 	if err != nil {
 		return []map[string]interface{}{}, err
@@ -63,7 +63,7 @@ func CreateJob(Job model.CreateJobRequest) error {
 			panic(err)
 		}
 	}()
-	collection := client.Database("IS766-Final-Project").Collection("jobbyuser")
+	collection := client.Database("IS766FinalProject").Collection("jobbyuser")
 	JobBson, err := bson.Marshal(Job)
 	if err != nil {
 		return err
@@ -89,7 +89,7 @@ func UpdateJob(Status string, whereurllink string, whereemail string, Job model.
 			panic(err)
 		}
 	}()
-	collection := client.Database("IS766-Final-Project").Collection("jobbyuser")
+	collection := client.Database("IS766FinalProject").Collection("jobbyuser")
 	//id, _ := primitive.ObjectIDFromHex("626405d650981a0d5cc6ad83")
 	_, err = collection.UpdateOne(
 		ctx,
@@ -123,7 +123,7 @@ func DeleteJob(id string) error {
 		}
 	}()
 
-	collection := client.Database("IS766-Final-Project").Collection("jobbyuser")
+	collection := client.Database("IS766FinalProject").Collection("jobbyuser")
 
 	_, err = collection.DeleteOne(ctx, filter)
 	if err != nil {
@@ -147,7 +147,7 @@ func GetUserJob(Email string) ([]map[string]interface{}, error) {
 		}
 	}()
 
-	collection := client.Database("IS766-Final-Project").Collection("jobbyuser")
+	collection := client.Database("IS766FinalProject").Collection("jobbyuser")
 	cur, err := collection.Find(ctx, bson.D{{"email", Email}})
 	if err != nil {
 		return []map[string]interface{}{}, err
@@ -188,7 +188,7 @@ func GetPosition2() ([]map[string]interface{}, error) {
 		}
 	}()
 
-	collection := client.Database("IS766-Final-Project").Collection("jobs")
+	collection := client.Database("IS766FinalProject").Collection("jobs")
 	cur, err := collection.Find(ctx, bson.D{})
 	if err != nil {
 		return []map[string]interface{}{}, err

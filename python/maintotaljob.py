@@ -4,8 +4,9 @@ from mongoengine import *
 
 
 def connect_mongo():
-    connect(host="mongodb+srv://IS766:66L8E4nVUyLBzWkn@is766cluster0.wvp1c.mongodb.net/IS766-Final-Project?retryWrites=true&w=majority")
-    # connect(host="mongodb+srv://is766:2hxK81IxuIiVbEL4@is766cluster0.7orlx.mongodb.net/IS766FinalProject?retryWrites=true&w=majority")
+    # connect(host="mongodb+srv://IS766:66L8E4nVUyLBzWkn@is766cluster0.wvp1c.mongodb.net/IS766-Final-Project?retryWrites=true&w=majority")
+    connect(host="mongodb+srv://IS766:66L8E4nVUyLBzWkn@is766cluster0.wvp1c.mongodb.net/IS766FinalProject?retryWrites=true&w=majority")
+    # connect(host="mongodb+srv://is766:2hxK81IxuIiVbEL4@is766cluster0.7orlx.mongodb.net/IS766-Final-Project?retryWrites=true&w=majority")
     return
 
 

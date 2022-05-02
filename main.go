@@ -20,9 +20,15 @@ func main() {
 
 	r := gin.Default()
 
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Not Found",
+		})
+	})
+
 	r.Use(cors.Default())
-	router.RouterBoat(r)
-	router.RouterKaew(r)
+	router.GuestRoute(r)
+	router.UserRoute(r)
 
 	r.Run()
 

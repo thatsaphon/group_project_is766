@@ -60,7 +60,7 @@ func GetUserByEmail(email string) (*auth.UserRecord, error) {
 	return u, nil
 }
 
-func CreateUser(email string, phoneNumber string,
+func CreateUser(email string,
 	password string, displayName string) error {
 	params := (&auth.UserToCreate{}).
 		Email(email).
@@ -69,9 +69,6 @@ func CreateUser(email string, phoneNumber string,
 		DisplayName(displayName).
 		Disabled(false)
 
-	if phoneNumber != "" {
-		params = params.PhoneNumber(phoneNumber)
-	}
 	u, err := ClientAuth.CreateUser(ctx, params)
 	if err != nil {
 		log.Printf("error creating user: %v\n", err)

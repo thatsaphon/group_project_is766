@@ -15,7 +15,6 @@ class Createjobin(BaseModel):
     position: str
     company: str
     urllink: str
-    email: str
     status: str
 
 
@@ -31,19 +30,6 @@ class Updatejobout(BaseModel):
     urllink: str
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-# list งานทั้งหมดจากแนน
-
-
-@app.get("/jobbyPosition")
-# GET http://127.0.0.1:8080/jobbyPosition HTTP/1.1
-async def read_job_by_position():
-    r = requests.get('http://127.0.0.1:8080/jobbyPosition')
-    return json.loads(r.content)
-
 # list เฉพาะงานที่ต้องการหา
 
 
@@ -53,14 +39,27 @@ async def read_jobbyPosition(position: str):
     r = requests.get('http://127.0.0.1:8080/position/'+position)
     return json.loads(r.content)
 
+
+@app.get("/company/{company}")
+# GET http://127.0.0.1:8080/company/ABC
+async def search_by_company(company: str):
+    r = requests.get('http://127.0.0.1:8080/company/'+company)
+    return json.loads(r.content)
+
+
+@app.get("/location/{location}")
+# GET http://127.0.0.1:8080/location/BKK
+async def search_by_location(location: str):
+    r = requests.get('http://127.0.0.1:8080/location/'+location)
+    return json.loads(r.content)
+
 # list งานทั้งหมดที่ user สมัครไว้ในระบบ
 
 
-@app.get("/alluserjob")
-# GET http://127.0.0.1:8080/alluserjob
-async def read_jobbyPosition(Authorization: str):
-    r = requests.get('http://127.0.0.1:8080/alluserjob',
-                     headers={"Authorization": Authorization})
+@app.get("/alljob")
+# GET http://127.0.0.1:8080/alljob
+async def read_all_job():
+    r = requests.get('http://127.0.0.1:8080/alljob')
     return json.loads(r.content)
 
 # แสดง job  ทั้งหมดของ User ตาม Email
@@ -68,7 +67,7 @@ async def read_jobbyPosition(Authorization: str):
 
 @app.get("/userjob")
 # GET http://127.0.0.1:8080/userjob/test77@email.com
-async def read_jobbyPosition(Authorization: str):
+async def read_user_job(Authorization: str):
 
     r = requests.get('http://127.0.0.1:8080/userjob',
                      headers={"Authorization": Authorization})
@@ -79,25 +78,30 @@ async def read_jobbyPosition(Authorization: str):
 
 @app.post("/userjob")
 def Create_job(userjob: Createjobin, Authorization: str):
-    r = requests.post("http://127.0.0.1:8080/userjob", json={
-        "position": userjob.position,
-        "company": userjob.company,
-        "urllink": userjob.urllink,
-        "email": userjob.email,
-        "status": userjob.status,
-    }, headers={"Authorization": Authorization})
+    try:
+        r = requests.post("http://127.0.0.1:8080/userjob", json={
+            "position": userjob.position,
+            "company": userjob.company,
+            "urllink": userjob.urllink,
+            "status": userjob.status,
+        }, headers={"Authorization": Authorization})
+    except requests.exceptions.HTTPError as err:
+        return err
     res_json = json.loads(r.content)
     return res_json
 
 # เปลี่ยนสถานนะของงาน
 
 
-@app.put("/userjob/{email}")
-def Update_job(email: str, Updatejob: Updatejobout, Authorization: str):
-    r = requests.put('http://127.0.0.1:8080/userjob/'+email, json={
-        "urllink": Updatejob.urllink,
-        "status": Updatejob.status,
-    }, headers={"Authorization": Authorization})
+@app.put("/userjob")
+def Update_job(Updatejob: Updatejobout, Authorization: str):
+    try:
+        r = requests.put('http://127.0.0.1:8080/userjob', json={
+            "urllink": Updatejob.urllink,
+            "status": Updatejob.status,
+        }, headers={"Authorization": Authorization})
+    except requests.exceptions.HTTPError as err:
+        return err
     res_json = json.loads(r.content)
     return res_json
 
@@ -122,12 +126,7 @@ async def get_user(Authorization: str):
 class Registerin(BaseModel):
     firstname: str = "Kaew"
     lastname: str = "KS"
-    birthdate: str = "16 May 1994"
-    address: str = "Home"
-    education: str = "Bachelor degree"
-    workExperience: Optional[str] = "work"
     email: str = "kaewks@gmail.com"
-    phone: str = "+66863527384"
     password: str = "123456"
 
 
@@ -136,12 +135,7 @@ def create_user(register: Registerin):
     r = requests.post("http://127.0.0.1:8080/register", json={
         "firstname": register.firstname,
         "lastname": register.lastname,
-        "birthdate": register.birthdate,
-        "address": register.birthdate,
         "email": register.email,
-        "phone": register.phone,
-        "education": register.education,
-        "workexperience": register.workExperience,
         "password": register.password,
     })
 
